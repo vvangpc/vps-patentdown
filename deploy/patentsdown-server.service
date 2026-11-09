@@ -1,0 +1,35 @@
+[Unit]
+Description=Patent PDF download API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/patentsdown-server
+EnvironmentFile=/etc/patentsdown-server.env
+Restart=always
+RestartSec=3
+User=patentsdown
+Group=patentsdown
+ExecStart=/opt/patentsdown-server/venv/bin/gunicorn --no-control-socket --bind 127.0.0.1:8000 --workers 1 --worker-class gthread --threads 4 --timeout 120 --graceful-timeout 30 --keep-alive 5 --max-requests 500 --max-requests-jitter 50 --access-logfile - --error-logfile - server:app
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+UMask=0077
+MemoryHigh=192M
+MemoryMax=256M
+TasksMax=32
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

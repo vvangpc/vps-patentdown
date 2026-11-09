@@ -1,0 +1,11 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name patent.example.com;
+    server_tokens off;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/patentsdown-acme;
+        default_type text/plain;
+    }
+    location / { return 503; }
+}

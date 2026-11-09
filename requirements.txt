@@ -1,0 +1,3 @@
+flask
+requests
+gunicorn==26.2.0
